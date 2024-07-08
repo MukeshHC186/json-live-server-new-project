@@ -182,13 +182,23 @@ async function displayData(data) {
         let td3 = document.createElement("td");
         td3.innerText = ele.Course;
         let td4=document.createElement("td")
-
-        tr.append(td,td1,td2,td3,td4)
+        let acceptbtn=document.createElement("button")
+        acceptbtn.innerText="Accept"
+        acceptbtn.id="accept"
+        
+        td4.append(acceptbtn)
+        tr.append(td,td1,td2,td3,td4,td4)
         tbody.append(tr)
 
       })
     }
     displayData()
-
+// async function accept(){
+//     try{
+     
+//     }catch(error){
+//         console.log(error);
+//     }
+// }
 </script>
 </html>
