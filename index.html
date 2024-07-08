@@ -22,7 +22,7 @@
             <li>Home</li>
             <li>About</li>
             <li>Contact</li>
-            <li>Service</li>
+            <li><a href="accept.html"> Accept</a></li>
           </ul>
         </div>
       </nav>
@@ -135,7 +135,6 @@
       </div>
 </body>
 <script>
-    let arr=[]
     let url="https://json-live-server-new-project.onrender.com/user"
     async function postData(e){
         e.preventDefault()
@@ -147,9 +146,8 @@
     try{
         let res=await axios.post(url,obj)
         // console.log(res.data);
-        arr=res.data
-        getData()
         form.reset()
+        getData()
         alert("submitted")
     }catch(error){
       console.log(error);
@@ -181,24 +179,44 @@ async function displayData(data) {
         td2.innerText = ele.Email;
         let td3 = document.createElement("td");
         td3.innerText = ele.Course;
-        let td4=document.createElement("td")
-        let acceptbtn=document.createElement("button")
-        acceptbtn.innerText="Accept"
-        acceptbtn.id="accept"
+        let td4 = document.createElement("td");
+        let acceptbtn = document.createElement("button");
+        acceptbtn.innerText = "Accept";
+        acceptbtn.addEventListener("click",()=>{
+          Accept(ele)
+          deleteData(ele.id)
+          displayData()
+        })
         
         td4.append(acceptbtn)
-        tr.append(td,td1,td2,td3,td4,td4)
+        tr.append(td,td1,td2,td3,td4)
         tbody.append(tr)
-
       })
+
     }
     displayData()
-// async function accept(){
-//     try{
-     
-//     }catch(error){
-//         console.log(error);
-//     }
-// }
+    async function Accept(data){
+      
+      let obj={
+        Name:data.Name,
+        Email:data.Email,
+        Course:data.Course
+      }
+      try{
+         let res=await axios.post("https://json-live-server-new-project.onrender.com/AcceptedData",obj)
+         alert("Accepted");
+      }catch(error){
+        console.log(error);
+      }
+    } 
+    async function deleteData(id){
+      try{
+         let res=await axios.delete(`https://json-live-server-new-project.onrender.com/user/${id}`)
+        //  alert("Deleted")
+         getData()
+      }catch(error){
+        console.log(error);
+      }
+    }
 </script>
 </html>
