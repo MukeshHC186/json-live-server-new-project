@@ -135,7 +135,7 @@
       </div>
 </body>
 <script>
-
+    let arr=[]
     let url="https://json-live-server-new-project.onrender.com/user"
     async function postData(e){
         e.preventDefault()
@@ -147,6 +147,7 @@
     try{
         let res=await axios.post(url,obj)
         // console.log(res.data);
+        arr=res.data
         getData()
         form.reset()
         alert("submitted")
