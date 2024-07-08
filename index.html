@@ -182,13 +182,21 @@ async function displayData(data) {
         let td4 = document.createElement("td");
         let acceptbtn = document.createElement("button");
         acceptbtn.innerText = "Accept";
+        acceptbtn.id="accept"
         acceptbtn.addEventListener("click",()=>{
           Accept(ele)
           deleteData(ele.id)
           displayData()
         })
+        let deletebtn=document.createElement("button")
+        deletebtn.innerText="Delete"
+        deletebtn.id="delete"
+        deletebtn.addEventListener("click",()=>{
+          deleteData(ele.id)
+          displayData()
+        })
         
-        td4.append(acceptbtn)
+        td4.append(acceptbtn,deletebtn)
         tr.append(td,td1,td2,td3,td4)
         tbody.append(tr)
       })

@@ -113,6 +113,7 @@ async function displayData(data) {
       let td3 = document.createElement("td");
       td3.innerText = ele.Course;
       let td4 = document.createElement("button");
+      td4.id="delete"
       td4.innerText = "Delete";
       td4.addEventListener("click",()=>{
         deleteData(ele.id)
