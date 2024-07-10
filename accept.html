@@ -93,7 +93,7 @@
 async function getData(){
     try{
         let res=await axios.get("https://json-live-server-new-project.onrender.com/AcceptedData")
-        // console.log(res.data)
+        console.log(res.data)
         displayData(res.data)
     }catch(error){
       console.log(error);
@@ -112,20 +112,23 @@ async function displayData(data) {
       td2.innerText = ele.Email;
       let td3 = document.createElement("td");
       td3.innerText = ele.Course;
-      let td4 = document.createElement("button");
-      td4.id="delete"
-      td4.innerText = "Delete";
-      td4.addEventListener("click",()=>{
+      let td4 = document.createElement("td");
+
+      let delbtn=document.createElement("button")
+      delbtn.id="delbtn"
+      delbtn.innerText = "Delete";
+      delbtn.addEventListener("click",()=>{
         deleteData(ele.id)
         displayData()
       })
       
-      
+      td4.append(delbtn)
       tr.append(td,td1,td2,td3,td4)
       tbody.append(tr)
-    })
+    
 
-  }
+  })
+}
   displayData()
   async function deleteData(id){
     try{
@@ -136,5 +139,6 @@ async function displayData(data) {
         console.log(error)
     }
   }
+
 </script>
   </html>

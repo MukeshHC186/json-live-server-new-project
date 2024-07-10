@@ -61,7 +61,7 @@
             <option>CSS</option>
             <option>JAVA</option>
           </select>
-          <input type="submit" id="btn" />
+          <button id="btn">Submit</button>
         </form>
       </div>
       <div class="display_data">
@@ -139,8 +139,7 @@
   </body>
   <script>
     let url = "https://json-live-server-new-project.onrender.com/user";
-    async function postData(e) {
-      e.preventDefault();
+    async function postData() {
       let obj = {
         Name: document.getElementById("name").value,
         Email: document.getElementById("email").value,
@@ -149,15 +148,14 @@
       try {
         let res = await axios.post(url, obj);
         // console.log(res.data);
+        alert("Data Added Successfully");
         form.reset();
         getData();
-        alert("submitted");
       } catch (error) {
         console.log(error);
       }
     }
     let btn = document.getElementById("btn");
-    btn.addEventListener("click", postData);
 
     async function getData() {
       try {
@@ -171,7 +169,7 @@
     getData();
 
     async function displayData(data) {
-      tbody.innerHTML = null;
+      tbody.innerHTML = "";
       data.map((ele, index) => {
         let tr = document.createElement("tr");
         let td = document.createElement("td");
@@ -188,23 +186,30 @@
         acceptbtn.id = "addbtn";
         acceptbtn.addEventListener("click", () => {
           Accept(ele);
-          deleteData(ele.id);
+          deleteData(ele);
           displayData();
         });
         let deletebtn = document.createElement("button");
         deletebtn.innerText = "Delete";
         deletebtn.id = "delbtn";
         deletebtn.addEventListener("click", () => {
-          deleteData(ele.id);
+          deleteData(ele);
           displayData();
         });
+        let editbtn = document.createElement("button");
+        editbtn.id = "editbtn";
+        editbtn.innerText = "Edit";
+        editbtn.addEventListener("click", () => {
+          getDataforEdit(ele);
+          // displayData()
+        });
 
-        td4.append(acceptbtn, deletebtn);
+        td4.append(acceptbtn, deletebtn, editbtn);
         tr.append(td, td1, td2, td3, td4);
         tbody.append(tr);
       });
     }
-    displayData();
+    // displayData();
     async function Accept(data) {
       let obj = {
         Name: data.Name,
@@ -221,10 +226,10 @@
         console.log(error);
       }
     }
-    async function deleteData(id) {
+    async function deleteData(data) {
       try {
         let res = await axios.delete(
-          `https://json-live-server-new-project.onrender.com/user/${id}`
+          `https://json-live-server-new-project.onrender.com/user/${data.id}`
         );
         //  alert("Deleted")
         getData();
@@ -232,5 +237,45 @@
         console.log(error);
       }
     }
+    let state = false;
+    let currentId = null;
+    async function getDataforEdit(data) {
+      state = true;
+      currentId = data.id;
+      document.getElementById("btn").innerText = "Update";
+      let obj = {
+        Name: (document.getElementById("name").value = data.Name),
+        Email: (document.getElementById("email").value = data.Email),
+        Course: (document.getElementById("course").value = data.Course),
+      };
+    }
+    async function updateData(data) {
+      let newobj = {
+        Name: document.getElementById("name").value,
+        Email: document.getElementById("email").value,
+        Course: document.getElementById("course").value,
+      };
+      try {
+        let res = await axios.patch(
+          `https://json-live-server-new-project.onrender.com/user/${currentId}`,
+          newobj
+        );
+        alert("Updated");
+        form.reset()
+        state = false;
+      document.getElementById("btn").innerText = "Submit";
+        getData();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (state) {
+        updateData();
+      } else {
+        postData();
+      }
+    });
   </script>
 </html>
